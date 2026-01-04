@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import AppThemeProvider from "@/provider/AppThemeProvider";
+import "@/styles/globals.css";
 import { poppins } from "@/fonts";
+import { AppThemeProvider } from "@/provider/app-theme-provider";
+import { Layout } from "@/shared/components/root-layout";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <AppThemeProvider>{children}</AppThemeProvider>
+        <AppThemeProvider>
+          <Layout>{children}</Layout>
+        </AppThemeProvider>
       </body>
     </html>
   );

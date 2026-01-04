@@ -1,8 +1,9 @@
+"use client";
 import { Theme } from "@radix-ui/themes";
 import { PropsWithChildren } from "react";
 
 function AppThemeProvider({ children }: PropsWithChildren) {
-  return <Theme>{children}</Theme>;
+  return <Theme appearance="dark">{children}</Theme>;
 }
 
-export default AppThemeProvider;
+export { AppThemeProvider };
