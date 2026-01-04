@@ -1,0 +1,8 @@
+@layer base, themes, components, radix_ui, utilities;
+
+@import "@radix-ui/themes/styles.css" layer(radix_ui);
+@import "tailwindcss";
+
+.radix-themes {
+  --default-font-family: var(--font-poppins);
+}
