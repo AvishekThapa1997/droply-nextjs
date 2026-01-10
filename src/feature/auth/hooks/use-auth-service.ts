@@ -1,12 +1,14 @@
-import { useSignUp } from "@clerk/nextjs";
-import { SignUpSchema } from "../validation/types";
+import { useSignIn, useSignUp } from "@clerk/nextjs";
+import { SignInSchema, SignUpSchema } from "../validation/types";
 
 export function useAuthService() {
-  const { signUp: clerkSignUp, isLoaded } = useSignUp();
+  const { signUp: clerkSignUp, isLoaded: isSignUpLoaded } = useSignUp();
+  const { signIn: clerkSignIn, isLoaded: isSignInLoaded } = useSignIn();
+
   const signUp = async (
     signUpDate: Pick<SignUpSchema, "email" | "password">
   ) => {
-    if (!isLoaded) return;
+    if (!isSignUpLoaded) return;
     await clerkSignUp.create({
       emailAddress: signUpDate.email,
       password: signUpDate.password,
@@ -15,5 +17,20 @@ export function useAuthService() {
       strategy: "email_code",
     });
   };
-  return { signUp };
+
+  const signIn = async (signInData: SignInSchema) => {
+    if (!isSignInLoaded) return;
+    try {
+      const result = await clerkSignIn.create({
+        identifier: signInData.email,
+        password: signInData.password,
+      });
+      console.log("Sign in result:", result);
+    } catch (err) {
+      console.error("Sign in error:", err);
+      throw err;
+    }
+  };
+
+  return { signUp, signIn };
 }

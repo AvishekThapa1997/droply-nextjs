@@ -1,5 +1,9 @@
+import { SignInPage } from "@/feature/auth/components/SignInPage";
+
 function SignIn() {
-  return <>Sign In page</>;
+  return <SignInPage />;
 }
+
+SignIn.displayName = "SignIn";
 
 export default SignIn;

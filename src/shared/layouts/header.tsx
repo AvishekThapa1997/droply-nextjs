@@ -1,5 +1,5 @@
 import { Flex } from "@radix-ui/themes";
-import Logo from "./logo";
+import Logo from "../components/logo";
 import { HeaderNav } from "./header-nav";
 
 function Header() {

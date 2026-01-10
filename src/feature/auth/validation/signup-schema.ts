@@ -4,6 +4,7 @@ import * as zod from "zod";
 
 export const signupSchema = zod
   .object({
+    name: zod.string().min(1, { error: "Name is required" }),
     email: emailSchema,
     password: passwordSchema,
     confirmPassword: zod
