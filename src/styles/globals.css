@@ -6,3 +6,7 @@
 .radix-themes {
   --default-font-family: var(--font-poppins);
 }
+
+button {
+  @apply cursor-pointer;
+}
