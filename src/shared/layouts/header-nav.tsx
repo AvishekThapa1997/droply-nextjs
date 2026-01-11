@@ -10,10 +10,10 @@ function AuthActions() {
   return (
     <Flex gap={"4"} align={"center"}>
       <Button variant="soft" size={"3"} asChild>
-        <Link href="/sign-in">Sign In</Link>
+        <Link href="/auth/sign-in">Sign In</Link>
       </Button>
       <Button size={"3"} asChild>
-        <Link href="/sign-up">Sign Up</Link>
+        <Link href="/auth/sign-up">Sign Up</Link>
       </Button>
     </Flex>
   );
