@@ -16,11 +16,12 @@ function SignInForm() {
             variant="surface"
             label="Email"
             color="gray"
+            autoComplete="email"
             leftIcon={<Mail height="16" width="16" />}
           />
         </Box>
         <Box>
-          <PasswordInput size={"3"} label="Password" placeholder="Password" />
+          <PasswordInput size={"3"} label="Password" placeholder="Password" autoComplete="current-password"/>
         </Box>
 
         <Button size="3" variant="solid" type="submit">

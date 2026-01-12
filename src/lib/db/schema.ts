@@ -60,7 +60,7 @@ export const users = pgTable("user", {
   passwordSalt: text("passwordSalt").notNull(),
   name: text("name"),
   email: text("email").unique(),
-  emailVerified: timestamp("emailVerified", { mode: "date" }),
+  emailVerified: boolean("emailVerified").notNull().default(false),
   image: text("image"),
 });
 

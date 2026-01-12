@@ -3,7 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import { db } from "../db";
 import { users } from "../db/schema";
 import { eq } from "drizzle-orm";
-import { comparePassword } from "../password";
+import { comparePassword } from "../../feature/auth/password";
 import { signinSchema } from "@/feature/auth/validation/signin-schema";
 
 const authOptions: NextAuthOptions = {
