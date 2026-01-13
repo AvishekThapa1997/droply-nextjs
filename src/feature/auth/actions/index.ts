@@ -5,15 +5,22 @@ import { signupSchema } from "../validation/signup-schema";
 import { users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { generateHashedPassword, generatePasswordSalt } from "../lib/password";
+import { FormActionState } from "@/types";
+import { SignUpSchema } from "../validation/types";
 
-export const signUp = async (formData: FormData) => {
+export const signUp = async (prevState:FormActionState<string,SignUpSchema>,formData: FormData):Promise<FormActionState<string,SignUpSchema>> => {
   try {
     const payload = Object.fromEntries(formData.entries());
     const { success, data, error } = await signupSchema.safeParseAsync(payload);
+   
     if (!success) {
       return {
-        success: false,
-        error: error.message,
+        status:"completed",
+        result:{
+          success: false,
+          error: error.message,
+        },
+        input:data
       };
     }
     const { name, email, password } = data;
@@ -23,9 +30,12 @@ export const signUp = async (formData: FormData) => {
       .where(eq(users.email, email));
     if (existingUser) {
       return {
-        success: false,
-        error:
-          "Unable to create account. Please try signing in or reset your password.",
+        status:"completed",
+        result:{
+          success: false,
+          error:
+            "Unable to create account. Please try signing in or reset your password.",
+        }
       };
     }
     const passwordSalt = await generatePasswordSalt();
@@ -45,14 +55,27 @@ export const signUp = async (formData: FormData) => {
       .returning();
     if (!user) {
       return {
-        success: false,
-        error: "Something went wrong.Please try again later.",
+        status:"completed",
+        result:{
+          success: false,
+          error: "Something went wrong.Please try again later.",
+        }
       };
+    }
+    return {
+      status:"completed",
+      result:{
+        success: true,
+        data: 'Account created successfully.',
+      }
     }
   } catch (error) {
     return {
-      success: false,
-      error: error instanceof Error ? error.message : "Something went wrong",
+      status:"completed",
+      result:{
+        success: false,
+        error: error instanceof Error ? error.message : "Something went wrong",
+      }
     };
   }
 };

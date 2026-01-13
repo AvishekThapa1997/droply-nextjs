@@ -7,11 +7,5 @@ export const signupSchema = zod
     name: zod.string().min(1, { error: "Name is required" }),
     email: emailSchema,
     password: passwordSchema,
-    confirmPassword: zod
-      .string()
-      .min(1, { error: "Confirm Password is required" }),
   })
-  .refine((data) => data.password === data.confirmPassword, {
-    error: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+ 

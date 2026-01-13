@@ -12,4 +12,12 @@ export type Result<T> = {
     success:false,
     error:string
 }
+
+
+export type FormActionState<R,I = any> = undefined | {
+  status:"completed",
+  result:Result<R>,
+  input?:I
+}
+
     

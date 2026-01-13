@@ -1,35 +1,25 @@
 "use client";
+import { SubmitButton } from "@/shared/components/submit-button";
 import { Form } from "@/shared/ui/form";
 import { Input } from "@/shared/ui/input";
 import { PasswordInput } from "@/shared/ui/password-input";
-import { Box, Button, Checkbox, Flex, Text } from "@radix-ui/themes";
+import type { FormActionState } from "@/types";
+import { Box, Checkbox, Flex, Text } from "@radix-ui/themes";
 import { Mail, User } from "lucide-react";
-import { SubmitHandler } from "react-hook-form";
-import type { SignUpSchema } from "../validation/types";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signupSchema } from "../validation/signup-schema";
+import { useActionState } from "react";
+import { signUp } from "../actions";
+import { SignUpSchema } from "../validation/types";
 
+const initialState : FormActionState<string,SignUpSchema> = {
+  status:"idle",
+}
 
 function SignUpForm() {
-  const { register, handleSubmit  } = useForm<SignUpSchema>({
-    resolver: zodResolver(signupSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-  });
-  const onSubmit: SubmitHandler<SignUpSchema> = async (data) => {
-    try {
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+ const [state, action] = useActionState(signUp, initialState);
+ const isCompleted = state.status === "completed";
+ const previousInputData = isCompleted ? state.input : null;
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form action={action}>
       <Flex direction="column" gap="4">
         <Box>
           <Input
@@ -38,9 +28,12 @@ function SignUpForm() {
             variant="surface"
             label="Full Name"
             color="gray"
+            name="name"
             leftIcon={<User height="16" width="16" />}
             autoComplete="name"
-            {...register("name")}
+            title="Please enter a valid name"
+            defaultValue={previousInputData?.name}
+            required
           />
         </Box>
         <Box>
@@ -50,15 +43,27 @@ function SignUpForm() {
             variant="surface"
             label="Email"
             color="gray"
+            name="email"
             leftIcon={<Mail height="16" width="16" />}
             autoComplete="email"
-            {...register("email")}
+            required
+            type="email"
+            defaultValue={previousInputData?.email}
           />
         </Box>
         <Box>
-          <PasswordInput size={"3"} label="Password" placeholder="Password" autoComplete="new-password" />
+          <PasswordInput
+            size={"3"}
+            label="Password"
+            placeholder="Password"
+            autoComplete="new-password"
+            minLength={8}
+            name="password"
+            defaultValue={previousInputData?.password}
+            required
+          />
         </Box>
-        
+
         <Flex gap="2">
           <Flex className="size-5 items-center">
             <Checkbox size="2" />
@@ -67,10 +72,9 @@ function SignUpForm() {
             By signing up, you agree to our Terms of Service and Privacy Policy
           </Text>
         </Flex>
-
-        <Button size="3" variant="solid" type="submit">
+        <SubmitButton size="3" variant="solid">
           Create Account
-        </Button>
+        </SubmitButton>
       </Flex>
     </Form>
   );
